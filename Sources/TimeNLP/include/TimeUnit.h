@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TimePoint.h"
 
-@class TimePoint;
 @class TimeNormalizer;
 
 typedef enum : NSUInteger {
