@@ -70,11 +70,13 @@ public class TimeUnit {
         tpOrigin.tunit = tp.tunit
         
         let timeGrids = timeBase.components(separatedBy: "-")
-        for i in 0..<timeGrids.count {
-            if tp.tunit[i] < 0 {
-                tp.tunit[i] = Int(timeGrids[i]) ?? 0
-            } else {
-                break
+        if !tp.tunit.filter({$0 >= 0}).isEmpty {
+            for i in 0..<timeGrids.count {
+                if tp.tunit[i] < 0 {
+                    tp.tunit[i] = Int(timeGrids[i]) ?? 0
+                } else {
+                    break
+                }
             }
         }
         var resultTmp: [String] = Array(repeating: "-1", count: 6)
