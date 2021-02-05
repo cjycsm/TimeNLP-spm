@@ -69,14 +69,12 @@ public class TimeUnit {
         
         tpOrigin.tunit = tp.tunit
         
-        let timeGrid = timeBase.components(separatedBy: "-")
-        var tunitpointer = 5;
-        while tunitpointer >= 0 && tp.tunit[tunitpointer] < 0 {
-            tunitpointer -= 1
-        }
-        for i in 0..<tunitpointer {
-            if (tp.tunit[i] < 0) {
-                tp.tunit[i] = Int(timeGrid[i]) ?? 0
+        let timeGrids = timeBase.components(separatedBy: "-")
+        for i in 0..<timeGrids.count {
+            if tp.tunit[i] < 0 {
+                tp.tunit[i] = Int(timeGrids[i]) ?? 0
+            } else {
+                break
             }
         }
         var resultTmp: [String] = Array(repeating: "-1", count: 6)

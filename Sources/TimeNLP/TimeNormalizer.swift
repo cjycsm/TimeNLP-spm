@@ -41,27 +41,24 @@ public class TimeNormalizer {
     func timeEx(target: String, timeBase: String) -> [TimeUnit] {
         var startLine: Int = -1
         var endLine: Int = -1
-        var temp: [String] = Array(repeating: "", count: 100)
-        var rpointer: Int = 0
+        var temp: [String] = []
         var timeResult: [TimeUnit] = []
         var match: [NSTextCheckingResult] = target.match(rules: patterns)
         while !match.isEmpty {
             startLine = match[0].range.location
             if endLine == startLine {
-                rpointer -= 1
-                temp[rpointer] += match.ng_group(target)
+                temp[temp.count - 1] += match.ng_group(target)
             } else {
-                temp[rpointer] = match.ng_group(target)
+                temp.append(match.ng_group(target))
             }
             endLine = match.ng_end()
-            rpointer += 1
             match.removeFirst()
         }
         
         let contextTp = TimePoint()
-        for i in 0..<rpointer {
+        for timeExpression in temp {
             let unit = TimeUnit()
-            unit.timeExpression = temp[i]
+            unit.timeExpression = timeExpression
             unit.normalizer = self
             unit.tpOrigin = contextTp
             unit.timeNormalization()
