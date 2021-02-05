@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     
     public func match(rules: String) -> [NSTextCheckingResult] {
         if let regularExp = try? NSRegularExpression(pattern: rules, options: .caseInsensitive) {
