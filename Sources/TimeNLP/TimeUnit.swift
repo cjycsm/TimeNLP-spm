@@ -79,7 +79,7 @@ public class TimeUnit {
                 tp.tunit[i] = Int(timeGrid[i]) ?? 0
             }
         }
-        var resultTmp: [String] = []
+        var resultTmp: [String] = Array(repeating: "-1", count: 6)
         resultTmp[0] = "\(tp.tunit[0])"
         if tp.tunit[0] >= 10 && tp.tunit[0] < 100 {
             resultTmp[0] = "19\(tp.tunit[0])"
