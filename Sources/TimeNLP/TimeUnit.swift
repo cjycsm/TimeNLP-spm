@@ -660,6 +660,7 @@ public class TimeUnit {
      * @param checkTimeIndex _tp.tunit时间数组的下标
      */
     private func preferFuture(_ timeIndex: Int) {
+        guard tp.tunit[timeIndex] >= 0 else {return}
         /**1. 检查被检查的时间级别之前，是否没有更高级的已经确定的时间，如果有，则不进行处理.*/
         for i in 0..<timeIndex {
             if tp.tunit[i] != -1 {
@@ -683,11 +684,9 @@ public class TimeUnit {
             return
         }
         /**6.准备增加的时间单位是被检查的时间的上一级，将上一级时间+1*/
-        if tp.tunit[timeIndex] != -1 {
-            date = date.ng_fs_dateByAddingValue(1, by: timeIndex - 1)
-            for i in 0..<timeIndex {
-                tp.tunit[i] = date.ng_fs_valueBy(i)
-            }
+        date = date.ng_fs_dateByAddingValue(1, by: timeIndex - 1)
+        for i in 0..<timeIndex {
+            tp.tunit[i] = date.ng_fs_valueBy(i)
         }
     }
     
