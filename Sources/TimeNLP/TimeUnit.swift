@@ -631,7 +631,7 @@ public class TimeUnit {
     
     private func match(_ string: String?, rule: String) -> [NSTextCheckingResult] {
         if let regularExp = try? NSRegularExpression(pattern: rule, options: .caseInsensitive), let string = string {
-            regularExp.matches(in: string, options: .reportCompletion, range: NSMakeRange(0, string.count))
+            return regularExp.matches(in: string, options: .reportCompletion, range: NSMakeRange(0, string.count))
         }
         return []
     }
