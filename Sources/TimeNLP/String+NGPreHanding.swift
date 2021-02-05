@@ -9,7 +9,7 @@ import Foundation
 
 public extension String {
     
-    public func match(rules: String) -> [NSTextCheckingResult] {
+    func match(rules: String) -> [NSTextCheckingResult] {
         if let regularExp = try? NSRegularExpression(pattern: rules, options: .caseInsensitive) {
             let match = regularExp.matches(in: self, options: .reportCompletion, range: NSMakeRange(0, count))
             return match
@@ -24,12 +24,12 @@ public extension String {
      * @param rules 删除规则
      * @return 清理工作完成后的字符串
      */
-    public func delKeyword(rules: String) -> String {
+    func delKeyword(rules: String) -> String {
         var result = self
-        var match = self.match(rules: rules)
+        var match = result.match(rules: rules)
         while !match.isEmpty {
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         return result
     }
@@ -47,11 +47,11 @@ public extension String {
      *
      * @return 转化完毕后的字符串
      */
-    public func numberTranslator() -> String {
+    func numberTranslator() -> String {
         var result = self
         
         var rules = "[一二两三四五六七八九123456789]万[一二两三四五六七八九123456789](?!(千|百|十))"
-        var match = self.match(rules: rules)
+        var match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "万")
             var num: Int = 0
@@ -59,11 +59,11 @@ public extension String {
                 num += s[0].wordToNumber() * 10000 + s[1].wordToNumber() * 1000
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "[一二两三四五六七八九123456789]千[一二两三四五六七八九123456789](?!(百|十))"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "千")
             var num: Int = 0
@@ -71,11 +71,11 @@ public extension String {
                 num += s[0].wordToNumber() * 1000 + s[1].wordToNumber() * 100
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "[一二两三四五六七八九123456789]百[一二两三四五六七八九123456789](?!十)"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "百")
             var num: Int = 0
@@ -83,27 +83,27 @@ public extension String {
                 num += s[0].wordToNumber() * 100 + s[1].wordToNumber() * 10
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "[零一二两三四五六七八九]"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let num = String(result[Range(match[0].range, in: result)!]).wordToNumber()
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "(?<=(周|星期))[末天日]"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let num = String(result[Range(match[0].range, in: result)!]).wordToNumber()
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "(?<!(周|星期))0?[0-9]?十[0-9]?"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "十")
             var num: Int = 0
@@ -130,11 +130,11 @@ public extension String {
                 num += Int(s[1]) ?? 0
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
                 
         rules = "0?[1-9]百[0-9]?[0-9]?"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "百")
             var num: Int = 0
@@ -147,11 +147,11 @@ public extension String {
                 num += Int(s[1]) ?? 0
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "0?[1-9]千[0-9]?[0-9]?[0-9]?"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "千")
             var num: Int = 0
@@ -164,11 +164,11 @@ public extension String {
                 num += Int(s[1]) ?? 0
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         rules = "[0-9]+万[0-9]?[0-9]?[0-9]?[0-9]?"
-        match = self.match(rules: rules)
+        match = result.match(rules: rules)
         while !match.isEmpty {
             let s = result[Range(match[0].range, in: result)!].components(separatedBy: "万")
             var num: Int = 0
@@ -181,7 +181,7 @@ public extension String {
                 num += Int(s[1]) ?? 0
             }
             result = result.replacingOccurrences(of: result[Range(match[0].range, in: result)!], with: "\(num)")
-            match = self.match(rules: rules)
+            match = result.match(rules: rules)
         }
         
         return result
